@@ -15,14 +15,15 @@ class CreateDjsTable extends Migration
     {
         Schema::create('djs', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
+            $table->text('bio')->nullable();
             $table->string('dj_name')->unique();
             $table->string('instagram')->unique()->nullable();
             $table->string('soundcloud')->unique()->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->enum('gender', ['M', 'F', 'O']);
+            $table->date("birthdate")->nullable();
+            $table->string("cv")->nullable();
             $table->text('address')->nullable();
             $table->string('cv_url')->nullable();
             $table->timestamps();

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGenresTable extends Migration
+class CreateConfigurationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateGenresTable extends Migration
      */
     public function up()
     {
-        Schema::create('genres', function (Blueprint $table) {
+        Schema::create('configurations', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->boolean('active')->default(1);
+            $table->string("prefered_days");  
+            $table->string('working_hours');
+            $table->float("rate");  //per hour
+            $table->boolean("negotiable")->default(0);
+            $table->boolean("available")->default(1);
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateGenresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('configurations');
     }
 }

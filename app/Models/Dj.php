@@ -17,4 +17,13 @@ class Dj extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * The genres that belong to the Dj
+     *
+     */
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
+    }
 }

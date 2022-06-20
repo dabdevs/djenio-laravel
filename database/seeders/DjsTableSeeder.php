@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Dj;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DjsTableSeeder extends Seeder
@@ -11,7 +12,7 @@ class DjsTableSeeder extends Seeder
         ["user_id" => 2, "firstname" => 'Alain', "lastname" => 'Jean', "dj_name" => "Notmixed"],
         ["user_id" => 3, "firstname" => 'Jacques', "lastname" => "Massu", "dj_name" => "Jaxz Bond"],
         ["user_id" => 6, "firstname" => 'Marc', "lastname" => "Jean", "dj_name" => "Astro"],
-        ["user_id" => 5, "firstname" => 'Angela', "lastname" => "Gomez", "dj_name" => "Gelalu"],
+        ["user_id" => 5, "firstname" => 'Angela', "lastname" => "Gomez", "dj_name" => "Gelalu", "gender" => "F"],
     ];
 
     /**
@@ -34,10 +35,14 @@ class DjsTableSeeder extends Seeder
             $dj = new Dj;
         }
 
+        $user = User::findOrFail($user_id);
+
         $dj->user_id = $user_id;
-        $dj->firstname = $firstname;
-        $dj->lastname = $lastname;
+        $user->firstname = $firstname;
+        $user->lastname = $lastname;
         $dj->dj_name = $dj_name;
+
+        $user->save();
         $dj->save();
     }
 }
