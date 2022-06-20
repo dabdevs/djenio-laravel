@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('city_id')->nullable();
             $table->foreign('city_id')->references('id')->on('cities');
             $table->rememberToken();
+            $table->boolean('profile_complete')->default(0);
             $table->timestamps();
         });
     }

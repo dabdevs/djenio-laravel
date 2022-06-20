@@ -50,8 +50,20 @@ class User extends Authenticatable
      */
     public function country()
     {
-        
         return $this->belongsTo(Country::class);
     }
 
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    /**
+     * Get the dj associated with the User
+     *
+     */
+    public function dj()
+    {
+        return $this->hasOne(Dj::class);
+    }
 }

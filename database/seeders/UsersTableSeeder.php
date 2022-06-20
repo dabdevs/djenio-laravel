@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -34,6 +36,9 @@ class UsersTableSeeder extends Seeder
 
         $user->email = $email;
         $user->password = Hash::make('1234');
+        $user->country_id = 1;
+        $user->city_id = 1;
+
         $user->save();
     }
 }

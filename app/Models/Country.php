@@ -15,6 +15,11 @@ class Country extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'country_user_table', 'user_id', 'country_id');
+        return $this->hasMany(User::class);
+    }
+
+    public function cities()
+    {
+        return $this->hasMany(City::class);
     }
 }
