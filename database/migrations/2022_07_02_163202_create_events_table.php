@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDjsTable extends Migration
+class CreateEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,20 @@ class CreateDjsTable extends Migration
      */
     public function up()
     {
-        Schema::create('djs', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->text('bio')->nullable();
-            $table->string('instagram')->unique()->nullable();
-            $table->string('linkedin')->unique()->nullable();
-            $table->string('soundcloud')->unique()->nullable();
+            $table->text('description');
+            $table->float('price');
+            $table->dateTime('start');
+            $table->dateTime('end');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string("resume")->nullable();
-            $table->boolean('active')->default(1);
+            $table->unsignedBigInteger('country_id');
+            $table->foreign('country_id')->references('id')->on('countries');
+            $table->unsignedBigInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('cities');
+            $table->string('url')->nullable();
             $table->timestamps();
         });
     }
@@ -35,6 +38,6 @@ class CreateDjsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('djs');
+        Schema::dropIfExists('events');
     }
 }

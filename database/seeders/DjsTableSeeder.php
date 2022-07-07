@@ -9,10 +9,10 @@ use Illuminate\Database\Seeder;
 class DjsTableSeeder extends Seeder
 {
     private $djs = [
-        ["user_id" => 2, "firstname" => 'Alain', "lastname" => 'Jean', "dj_name" => "Notmixed"],
-        ["user_id" => 3, "firstname" => 'Jacques', "lastname" => "Massu", "dj_name" => "Jaxz Bond"],
-        ["user_id" => 6, "firstname" => 'Marc', "lastname" => "Jean", "dj_name" => "Astro"],
-        ["user_id" => 5, "firstname" => 'Angela', "lastname" => "Gomez", "dj_name" => "Gelalu", "gender" => "F"],
+        ["user_id" => 2, "firstname" => 'Alain', "lastname" => 'Jean', "name" => "Notmixed"],
+        ["user_id" => 3, "firstname" => 'Jacques', "lastname" => "Massu", "name" => "Jaxz Bond"],
+        ["user_id" => 6, "firstname" => 'Marc', "lastname" => "Jean", "name" => "Astro"],
+        ["user_id" => 5, "firstname" => 'Angela', "lastname" => "Gomez", "name" => "Gelalu", "gender" => "F"],
     ];
 
     /**
@@ -23,13 +23,13 @@ class DjsTableSeeder extends Seeder
     public function run()
     {
         foreach ($this->djs as $dj) {
-            $this->createRow($dj["user_id"], $dj["firstname"], $dj["lastname"], $dj["dj_name"]);
+            $this->createRow($dj["user_id"], $dj["firstname"], $dj["lastname"], $dj["name"]);
         }
     }
 
-    private function createRow($user_id, $firstname, $lastname, $dj_name)
+    private function createRow($user_id, $firstname, $lastname, $name)
     {
-        $dj = Dj::where('dj_name', $dj_name)->first(); 
+        $dj = Dj::where('name', $name)->first(); 
        
         if ($dj == null) {
             $dj = new Dj;
@@ -40,7 +40,7 @@ class DjsTableSeeder extends Seeder
         $dj->user_id = $user_id;
         $user->firstname = $firstname;
         $user->lastname = $lastname;
-        $dj->dj_name = $dj_name;
+        $dj->name = $name;
 
         $user->save();
         $dj->save();

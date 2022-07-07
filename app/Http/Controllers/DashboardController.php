@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use \Carbon\Carbon;
+use App\Http\Requests\AccountFormRequest;
+use App\Models\City;
+use App\Models\Configuration;
+use App\Models\Country;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,40 +18,52 @@ class DashboardController extends Controller
         return view('dashboard.index');
     }
 
-    public function account(Request $request)
+    public function account()
     {
-        $user = Auth::user();
-
-        if($request->method() == "POST") {
-            $data = $request->all(); //dd($data);
-
-            try {
-                if($user->dj != null) {
-                    $user->dj->genres()->sync($data["genres"]);
-                }
-
-                $user->update($data);
-
-                return back()->with('success', 'Account updated!');
-            } catch (\Throwable $th) {
-                throw $th;
-            }  
-        }
-
         $dj_account_form_data = $this->getDjAccountFormData();
         return view('dashboard.account', ["dj_account_form_data" => $dj_account_form_data]);
+    }
+
+    public function updateAccount(AccountFormRequest $request)
+    {
+        $data = $request->validated();
+        $birthdate = $data['birthdate']; //dd($birthdate);
+        $data['birthdate'] = date("Y-m-d", strtotime($birthdate));
+
+        $user = Auth::user(); 
+        $dj = $user->dj; 
+
+        try {
+            $user->update($data);
+
+            if($dj != null && isset($data["genres"])) {
+                $dj->genres()->sync($data["genres"]);
+                $dj->save();
+            }
+
+            return back()->with('success', 'Account updated!');
+        } catch (\Throwable $th) {
+            throw $th;
+        }  
     }
 
     public function getDjAccountFormData()
     {
         $data = [];
 
-        $data["genres"] = \DB::select('select id, name from genres where active = ? order by name', [1]);
+        $data["genres"] = Genre::whereActive(1)->get(); 
+        $data["countries"] = Country::whereActive(1)->orderBy('name')->get(); 
+        $data["cities"] = City::whereActive(1)->orderBy('name')->get(); 
 
-        $data["configurations"] = \DB::select('select * from configurations');
+        $data["configurations"] = auth()->user()->dj->configurations; 
 
         if(empty($data)) return null;
 
         return $data;
+    }
+
+    public function getCities(Country $country)
+    {
+        return response()->json(array('success' => true, ['cities' => $country->cities]));
     }
 }

@@ -19,11 +19,34 @@ class Dj extends Model
     }
 
     /**
+     * Get the dj's configurations
+     *
+     */
+    public function configurations()
+    {
+        return $this->hasOne(Configuration::class);
+    }
+
+    /**
      * The genres that belong to the Dj
      *
      */
     public function genres()
     {
         return $this->belongsToMany(Genre::class);
+    }
+
+    public function activate()
+    {
+        $this->active = 1;
+        $this->save();
+        return true;
+    }
+
+    public function deactivate()
+    {
+        $this->active = 0;
+        $this->save();
+        return true;
     }
 }

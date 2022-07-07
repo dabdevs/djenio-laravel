@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 Route::get('/account', [DashboardController::class, 'account'])->middleware(['auth'])->name('account');
-Route::post('/account', [DashboardController::class, 'account'])->middleware(['auth'])->name('account');
+Route::get('/cities/{country}', [DashboardController::class, 'getCities'])->middleware(['auth'])->name('get-cities');
+Route::post('/update-account', [DashboardController::class, 'updateAccount'])->middleware(['auth'])->name('account-update');
 
 require __DIR__.'/auth.php';

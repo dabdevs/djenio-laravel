@@ -23,7 +23,13 @@ class User extends Authenticatable
         'email',
         'password',
         'firstname',
-        'lastname'
+        'lastname',
+        'gender',
+        'birthdate',
+        'country_id',
+        'city_id',
+        'telephone',
+        'address'
     ];
 
     /**
@@ -67,4 +73,43 @@ class User extends Authenticatable
     {
         return $this->hasOne(Dj::class);
     }
+
+    /**
+     * Get the events associated with the User
+     *
+     */
+    public function events()
+    {
+        return $this->hasOne(Event::class);
+    }
+
+    /**
+     * Return boolean
+     *
+     */
+    public function isDj()
+    {
+        return $this->dj != null;
+    }
+
+    /**
+     *
+     */
+    public function createDj(String $name)
+    {
+        $dj = Dj::where('name', $name)->first(); 
+       
+        if ($dj != null) {
+            throw new Exception("Dj already exists. Choose another name.", 404);
+        }
+
+        $dj = new Dj();
+        $dj->name = $name;
+        $dj->user_id = $this->id;
+        $dj->save();
+        
+        return $dj;
+    }
+
+
 }

@@ -15,11 +15,14 @@ class CreateConfigurationsTable extends Migration
     {
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
-            $table->string("prefered_days");  
-            $table->string('working_hours');
-            $table->float("rate");  //per hour
+            $table->float("fee_per_hour"); 
+            $table->string('prefered_cities')->nullable();
+            $table->string('days_hours')->nullable(); 
+            $table->string('prefered_hours')->nullable();
             $table->boolean("negotiable")->default(0);
             $table->boolean("available")->default(1);
+            $table->unsignedBigInteger('dj_id');
+            $table->foreign('dj_id')->references('id')->on('djs');
             $table->timestamps();
         });
     }
